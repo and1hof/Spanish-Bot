@@ -17,7 +17,9 @@
     </div>
 
     <div class="small-4 columns stats">
-        //stats
+        Messages Sent: <b class="mSent">0</b><br>
+        Messages Received: <b class="mRec">0</b><br>
+        Avg. Response Time: <b class="mTime">0</b> <b>ms</b><br>
     </div>
     
     <div class="small-8 columns">
@@ -41,13 +43,12 @@
 </div>
 
 <script>
-    $( document ).ready(function() {
-
-    });
     // set up variables
     var input      = new Array();
     var output     = new Array();
     var timestamps = new Array();
+    var totalTime  = 0;
+    var avgTime    = 0;
     
     // create a new instance of cleverbot via cleverbot.io API
     var bot = new cleverbot("5bZbf6n66fs2NcDg", "UJs7uRncKarcSfHdue2GEtLZxdYPbYLX");
@@ -72,12 +73,14 @@
     }
     
     function submitMessage() {
+       var start = new Date().getTime();
        var x = $("#message").val(); // get user's message
        input.push(x); // push to array of inputs
        // append to HTML
        var x2 = '<div class="panel"><h5>Username @ date/time</h5><p>' + x + '</p></div>';
        console.log("input: " + x);
        $(".messages").append(x2); // add new response
+       $(".mSent").html(input.length);
        
        bot.ask(x, function (err, response) { // collect ouput
              // CATCH 400 error and return message "I don't understand, please ask something else!"
@@ -86,6 +89,12 @@
              output.push(y); // store output in output array
              var y2 = '<div class="panel callout"><h5>Juarez @ date/time</h5><p>' + y + '</p></div>';
              $(".messages").append(y2); // add new response
+             $(".mRec").html(output.length);
+            var end = new Date().getTime();
+            var time = end - start;
+            totalTime += time;
+            avgTime = (totalTime / (input.length + output.length));
+            $(".mTime").html(avgTime.toFixed(1));
         });
        $("#message").val(''); // reset input form
     }
