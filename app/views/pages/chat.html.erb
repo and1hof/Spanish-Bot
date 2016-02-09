@@ -76,10 +76,13 @@
        input.push(x); // push to array of inputs
        // append to HTML
        var x2 = '<div class="panel"><h5>Username @ date/time</h5><p>' + x + '</p></div>';
+       console.log("input: " + x);
        $(".messages").append(x2); // add new response
        
        bot.ask(x, function (err, response) { // collect ouput
+             // CATCH 400 error and return message "I don't understand, please ask something else!"
              var y = response;
+             console.log("output: " + y);
              output.push(y); // store output in output array
              var y2 = '<div class="panel callout"><h5>Juarez @ date/time</h5><p>' + y + '</p></div>';
              $(".messages").append(y2); // add new response
