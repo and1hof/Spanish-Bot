@@ -1,1 +1,89 @@
-chat page
+<script src="//cdn.cleverbot.io/build/1.0/cleverbot.io.min.js"></script>
+
+<div class="row">
+
+    <div class="small-4 columns">
+        <center>
+            <h4>Stats</h4>
+        </center>
+
+
+    </div>
+
+    <div class="small-8 columns">
+        <center>
+            <h4>Conversation</h4>
+        </center>
+    </div>
+
+    <div class="small-4 columns stats">
+        //stats
+    </div>
+    
+    <div class="small-8 columns">
+        <center>
+            <div class="row collapse">
+                <div class="small-10 columns">
+                    <input type="text" id="message" placeholder="say something...">
+                </div>
+                <div class="small-2 columns">
+                    <a href="#" class="button postfix" onClick='submitMessage()'>Send</a>
+                </div>
+            </div>
+
+            <div class="messages">
+
+            </div>
+
+        </center>
+    </div>
+
+</div>
+
+<script>
+    $( document ).ready(function() {
+
+    });
+    // set up variables
+    var input      = new Array();
+    var output     = new Array();
+    var timestamps = new Array();
+    
+    // create a new instance of cleverbot via cleverbot.io API
+    var bot = new cleverbot("5bZbf6n66fs2NcDg", "UJs7uRncKarcSfHdue2GEtLZxdYPbYLX");
+    bot.create(function(err, session) {
+        // bot initalized, begin communication
+        // grab input from form, and store it in user-input array
+        function askBot(input) {
+            bot.ask(input, function(err, response) {
+                alert(response); // Will likely be: "Living in a lonely world"
+            });
+        }
+    });
+    
+    // to prevent API call abuse
+    function sleep(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
+    }
+    
+    function submitMessage() {
+       var x = $("#message").val(); // get user's message
+       input.push(x); // push to array of inputs
+       // append to HTML
+       var x2 = '<div class="panel"><h5>Username @ date/time</h5><p>' + x + '</p></div>';
+       $(".messages").append(x2); // add new response
+       
+       bot.ask(x, function (err, response) { // collect ouput
+             var y = response;
+             output.push(y); // store output in output array
+             var y2 = '<div class="panel callout"><h5>Juarez @ date/time</h5><p>' + y + '</p></div>';
+             $(".messages").append(y2); // add new response
+        });
+       $("#message").val(''); // reset input form
+    }
+</script>
