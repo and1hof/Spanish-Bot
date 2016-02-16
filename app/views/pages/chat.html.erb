@@ -1,4 +1,75 @@
 <script src="//cdn.cleverbot.io/build/1.0/cleverbot.io.min.js"></script>
+<script>
+    // set up variables
+    var input = new Array();
+    var output = new Array();
+    var timestamps = new Array();
+    var totalTime = 0;
+    var avgTime = 0;
+
+    // create a new instance of cleverbot via cleverbot.io API
+    var bot = new cleverbot("uxQ5HANW9PqZE0pY", "yORSE3vCIKwVEmDizXUShJaWzXBTC83X");
+    bot.create(function(err, session) {
+        // bot initalized, begin communication
+        // grab input from form, and store it in user-input array
+    });
+
+    // to prevent API call abuse
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds) {
+                break;
+            }
+        }
+    }
+    
+    function submitMessage() {
+        var start = new Date().getTime();
+        var x = $("#message").val(); // get user's message
+        input.push(x); // push to array of inputs
+        // append to HTML
+        var x2 = '<div class="panel"><h5><%= current_user.email %></h5><p>' + x + '</p></div>';
+        console.log("input: " + x);
+        $(".messages").append(x2); // add new response
+        $(".mSent").html(input.length);
+        var fin = false;
+        
+        askQ(x);
+        function askQ(x) {
+            bot.ask(x, function(err, response) { // collect ouput
+                // CATCH 400 error and return message "I don't understand, please ask something else!"
+                var y = response;
+                jQuery.ajax({
+                    url: "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20160215T040721Z.739981565178a30b.7fb23ae4e551a086a0e9ded9662b3982dbc01311&lang=en-es&text=" + y,
+                    dataType: 'jsonp',
+                    success: function(data) {
+                        y = data.text;
+                        console.log("output: " + y);
+                        output.push(y); // store output in output array
+                        var y2 = '<div class="panel callout"><h5>Juarez</h5><p>' + y + '</p></div>';
+                        $(".messages").append(y2); // add new response
+                        $(".mRec").html(output.length);
+                        var end = new Date().getTime();
+                        var time = end - start;
+                        totalTime += time;
+                        avgTime = (totalTime / (input.length + output.length));
+                        $(".mTime").html(avgTime.toFixed(1));
+                        fin = true;
+                    }
+                }); 
+            }); 
+        }
+        
+        setTimeout(function(){
+            if (!fin) {
+                askQ(x); // ask a second time
+            }
+        }, 1000);
+        
+        $("#message").val(''); // reset input form
+    }
+</script>
 
 <div class="row">
 
@@ -42,70 +113,3 @@
     </div>
 
 </div>
-
-<script>
-    // set up variables
-    var input = new Array();
-    var output = new Array();
-    var timestamps = new Array();
-    var totalTime = 0;
-    var avgTime = 0;
-
-    // create a new instance of cleverbot via cleverbot.io API
-    var bot = new cleverbot("5bZbf6n66fs2NcDg", "UJs7uRncKarcSfHdue2GEtLZxdYPbYLX");
-    bot.create(function(err, session) {
-        // bot initalized, begin communication
-        // grab input from form, and store it in user-input array
-        function askBot(input) {
-            bot.ask(input, function(err, response) {
-                alert(response); // Will likely be: "Living in a lonely world"
-            });
-        }
-    });
-
-    // to prevent API call abuse
-    function sleep(milliseconds) {
-        var start = new Date().getTime();
-        for (var i = 0; i < 1e7; i++) {
-            if ((new Date().getTime() - start) > milliseconds) {
-                break;
-            }
-        }
-    }
-    
-    function submitMessage() {
-        var start = new Date().getTime();
-        var x = $("#message").val(); // get user's message
-        input.push(x); // push to array of inputs
-        // append to HTML
-        var x2 = '<div class="panel"><h5><%= current_user.email %></h5><p>' + x + '</p></div>';
-        console.log("input: " + x);
-        $(".messages").append(x2); // add new response
-        $(".mSent").html(input.length);
-
-        bot.ask(x, function(err, response) { // collect ouput
-            // CATCH 400 error and return message "I don't understand, please ask something else!"
-            var y = response;
-            jQuery.ajax({
-                url: "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20160215T040721Z.739981565178a30b.7fb23ae4e551a086a0e9ded9662b3982dbc01311&lang=en-es&text=" + y,
-                dataType: 'jsonp',
-                success: function(data) {
-                    y = data.text;
-                    console.log("output: " + y);
-                    output.push(y); // store output in output array
-                    var d = new Date();
-                    var n = d.getMilliseconds();
-                    var y2 = '<div class="panel callout"><h5>Juarez</h5><p>' + y + '</p></div>';
-                    $(".messages").append(y2); // add new response
-                    $(".mRec").html(output.length);
-                    var end = new Date().getTime();
-                    var time = end - start;
-                    totalTime += time;
-                    avgTime = (totalTime / (input.length + output.length));
-                    $(".mTime").html(avgTime.toFixed(1));
-                }
-            });
-        });
-        $("#message").val(''); // reset input form
-    }
-</script>
