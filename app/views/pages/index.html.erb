@@ -18,12 +18,39 @@
 <body>
 
     <div class="row">
-        <div class="large-8 columns">
-            <h4>---- Spanish Bot ----</h4>
-            <p>This app makes use of the cleverbot.io knowledge-base and yandex machine translation libraries to produce an AI agent capable of speaking conversational Spanish.</p>
-            <p>All of the responses are crowed sourced, and than picked via relevancy to the question asked so they might be weird from time to time.</p>
-            <p>To get started, sign up for an account and navigate to the "chat" menu.</p>
+        <div class="large-12 columns">
+            <center><b>A screenshot of Spanish Bot in action!</b>
+                <img src="http://i.imgur.com/BSWZewJ.png" style="border: 1px solid black;"></img></br>
+            </center>
+        </div></br>
+    </div>
+
+    <div class="row">
+        <div class="large-2 columns">
+            <h5>Technology Used</h5>
+            <ul class="side-nav">
+                <li><a href="http://rubyonrails.org/">Ruby on Rails</a></li>
+                <li><a href="http://www.postgresql.org/">PostgreSQL</a></li>
+                <li><a href="https://heroku.com/">Heroku</a></li>
+                <li><a href="https://jquery.com/">JQuery</a></li>
+                <li><a href="http://foundation.zurb.com/templates.html">Foundation</a></li>
+                <li><a href="https://cleverbot.io/">Cleverbot REST</a></li>
+                <li><a href="https://translate.yandex.com/">Yandex REST</a></li>
+            </ul>
         </div>
+
+        <div class="large-10  columns">
+            <h3>Spanish Bot <small>Practice Conversational Spanish with an AI!</small></h3>
+            <p>Spanish Bot functions by integrating a few cool technology platforms together:</p>
+             <ol>
+                 <li>Using Ruby on Rails (framework) and PostgreSQL (database), the application handles authentication and HTTP routing (urls).</li>
+                 <li>After authenticating, some Ruby code generates Javascript REST API calls which allow the application to talk to a database of messages
+                 collected from real humans in real IM chats.</li>
+                 <li>The application attempts to match the (english) input to an (english) output collected from the message database.</li>
+                 <li>Once a suitable message is found, the words are translated using the Yandex machine translation library, and than an attempt at fixing grammer is performed (also Yandex).</li>
+                 <li>Finally, the translated result is posted to the screen for the user to see using a Javascript library called JQuery (AJAX requests).</li>
+             </ol>
+                             <center><small><i>A cool diagram I found</i></small></br><img src="http://i.imgur.com/A5l6czs.png"></img></center>
     </div>
 
     <footer class="row">
@@ -31,9 +58,10 @@
             <hr/>
             <div class="row">
                 <div class="large-6 columns">
-                    <p>Source Code on github.com/andhofmt</p>
+                    <p>&copy; No Copyright. Modify or distribute if you please.</p>
                 </div>
             </div>
+            
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
